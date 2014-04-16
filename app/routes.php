@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('main_app');
-});
+Route::get('/', 'HomeController@mainApp');
 
 Route::controller('users', 'UsersController');
+
+Route::controller('tasks', 'TasksController');

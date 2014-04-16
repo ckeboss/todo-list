@@ -15,9 +15,12 @@ class HomeController extends BaseController {
 	|
 	*/
 
-	public function showWelcome()
-	{
-		return View::make('hello');
+	public function mainApp() {
+		$user = App::make('User');
+		
+		$users = $user->lists('name', 'id');
+		
+		return View::make('main_app')->with('users', $users);
 	}
 
 }

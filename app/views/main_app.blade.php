@@ -6,6 +6,7 @@
 		{{ HTML::style('css/bootstrap.css'); }}
 		{{ HTML::style('css/styles.css'); }}
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript">app = {url: '{{ URL::to('/') }}'};</script>
 		{{ HTML::script('js/scripts.js'); }}
 		{{ HTML::script('js/bootstrap/tab.js'); }}
 		<title>Todo List</title>
@@ -25,6 +26,7 @@
 			
 			<h1 class="text-center">Todo List</h1>
 			
+			@if(!Auth::check())
 			<ul class="nav nav-tabs" id="login-registation-tabs">
 				<li class="active"><a href="#login" data-toggle="tab">Login</a></li>
 				<li><a href="#register" data-toggle="tab">Register</a></li>
@@ -34,6 +36,29 @@
 				<div class="tab-pane active" id="login">{{ View::make('users.login'); }}</div>
 				<div class="tab-pane" id="register">{{ View::make('users.register'); }}</div>
 			</div>
+			@else
+			<h3>Welcome {{ Auth::user()->name }}!</h3>
+			@endif
+			
+			<section id="tasks">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th style="width: 20px;">Finished?</th>
+							<th>Task</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+				
+				<ul class="pagination">
+				</ul>
+			</section>
+			
+			<section id="new-task">
+				{{ View::make('tasks.new')->with('users', $users); }}
+			</section>
 		</div>
 	</body>
 </html>
