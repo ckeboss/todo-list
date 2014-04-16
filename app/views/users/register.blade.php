@@ -1,4 +1,4 @@
-{{ Form::open(array('url'=>'users/register', 'class'=>'form-signup', 'autocomplete' => 'off', 'role' => 'form')) }}
+{{ Form::open(array('url'=>'users/register', 'class'=>'form-signup', 'autocomplete' => 'off', 'id' => 'registration-form', 'role' => 'form')) }}
 
 	{{ Form::textField('name', null, null, array('class'=>'form-control', 'placeholder'=>'Name')) }}
 	{{ Form::textField('email', null, null, array('class'=>'form-control', 'placeholder'=>'Email')) }}

@@ -26,10 +26,22 @@ class UsersController extends BaseController {
 			
 			$user->save();
 			
-			return Redirect::to('users/login')->with('message', 'Thank you for registering, please login below.');
+			$msg = 'Thank you for registering, please login below.';
+			
+			if (Request::ajax()) {
+				return Response::json(array('msg' => $msg));
+			}
+			
+			return Redirect::to('users/login')->with('message', $msg);
 		}
 		
-		return Redirect::to('users/register')->with('message', 'The following errors occurred')->withErrors($validator)->withInput();
+		$msg = 'The following errors occurred';
+		
+		if (Request::ajax()) {
+			return Response::json(array('msg' => $msg, 'errors' => $validator->messages()->toArray()), 400);
+		}
+		
+		return Redirect::to('users/register')->with('message', $msg)->withErrors($validator)->withInput();
 	}
 	
 	public function getLogin() {
