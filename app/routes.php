@@ -11,4 +11,9 @@
 |
 */
 
+Route::get('/', function()
+{
+	return View::make('main_app');
+});
+
 Route::controller('users', 'UsersController');

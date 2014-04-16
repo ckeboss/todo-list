@@ -1,16 +1,9 @@
-{{ Form::open(array('url'=>'users/register', 'class'=>'form-signup', 'autocomplete' => 'off')) }}
-    <h2 class="form-signup-heading">Please Register</h2>
+{{ Form::open(array('url'=>'users/register', 'class'=>'form-signup', 'autocomplete' => 'off', 'role' => 'form')) }}
+
+	{{ Form::textField('name', null, null, array('class'=>'form-control', 'placeholder'=>'Name')) }}
+	{{ Form::textField('email', null, null, array('class'=>'form-control', 'placeholder'=>'Email')) }}
+	{{ Form::passwordField('password', null, array('class'=>'form-control', 'placeholder'=>'Password')) }}
+	{{ Form::passwordField('password_confirmation', null, array('class'=>'form-control', 'placeholder'=>'Confirm Password')) }}
  
-    <ul>
-        @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-        @endforeach
-    </ul>
- 
-    {{ Form::text('name', null, array('class'=>'input-block-level', 'placeholder'=>'Name')) }}
-    {{ Form::text('email', null, array('class'=>'input-block-level', 'placeholder'=>'Email')) }}
-    {{ Form::password('password', array('class'=>'input-block-level', 'placeholder'=>'Password')) }}
-    {{ Form::password('password_confirmation', array('class'=>'input-block-level', 'placeholder'=>'Confirm Password')) }}
- 
-    {{ Form::submit('Register', array('class'=>'btn btn-large btn-primary btn-block'))}}
+	{{ Form::submit('Register', array('class'=>'btn btn-large btn-primary btn-block'))}}
 {{ Form::close() }}

@@ -3,7 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 		{{ HTML::style('css/bootstrap.css'); }}
+		{{ HTML::script('js/bootstrap/tab.js'); }}
 		<title>Todo List</title>
 		
 		<!--[if lt IE 9]>
@@ -13,22 +15,21 @@
 	</head>
 	
 	<body>
-		<div class="navbar navbar-inverse">
-			<div class="container">
-						<ul class="nav navbar-nav">
-							<li>{{ HTML::link('users/register', 'Register') }}</li>   
-							<li>{{ HTML::link('users/login', 'Login') }}</li>   
-						</ul>  
-				</div>
-			</div>
-		</div>
 		
 		<div class="container">
 			@if(Session::has('message'))
 			<p class="alert alert-info">{{ Session::get('message') }}</p>
 			@endif
 			
-			{{ $content }}
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#login" data-toggle="tab">Login</a></li>
+				<li><a href="#register" data-toggle="tab">Register</a></li>
+			</ul>
+			
+			<div class="tab-content">
+				<div class="tab-pane active" id="login">{{ View::make('users.login'); }}</div>
+				<div class="tab-pane" id="register">{{ View::make('users.register'); }}</div>
+			</div>
 		</div>
 	</body>
 </html>
