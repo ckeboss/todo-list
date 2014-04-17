@@ -54,9 +54,9 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'localhost',
-			'database'  => 'todo-list',
-			'username'  => 'root',
+			'host'      => $_ENV['mysql_host'],
+			'database'  => $_ENV['mysql_database'],
+			'username'  => $_ENV['mysql_username'],
 			'password'  => $_ENV['mysql_password'],
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',

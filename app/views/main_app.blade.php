@@ -92,6 +92,7 @@
 				</div>
 				
 				<section id="new-task">
+					<h4>Add Task</h4>
 					@if(Auth::check())
 						{{ View::make('tasks/new')->with('users', $users) }}
 					@endif
