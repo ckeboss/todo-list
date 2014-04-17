@@ -4,13 +4,7 @@ class UsersController extends BaseController {
 	
 	public function __construct() {
 		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('auth', array('only' => 'getDashboard'));
-	}
-	
-	protected $layout = "layouts.main";
-	
-	public function getRegister() {
-		$this->layout->content = View::make('users.register');
+		$this->beforeFilter('auth', array('only' => 'getLogout'));
 	}
 	
 	public function postRegister() {
@@ -44,20 +38,14 @@ class UsersController extends BaseController {
 		return Redirect::to('users/register')->with('message', $msg)->withErrors($validator)->withInput();
 	}
 	
-	public function getLogin() {
-		$this->layout->content = View::make('users.login');
-	}
-	
 	public function postLogin() {
-		if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
-			return Redirect::to('users/dashboard')->with('message', 'You are now logged in!');	
+		if (Request::ajax()) {
+			if (Auth::attempt(array('email'=>Input::get('email'), 'password'=>Input::get('password')))) {
+				return Response::json(array('message' => 'You have been logged in!', 'user_id' => Auth::user()->id, 'name' => Auth::user()->name));
+			}
+			
+			return Response::json(array('message' => 'Your username or password was incorrect.'));
 		}
-		
-		return Redirect::to('users/login')->with('message', 'Your username/password combination was incorrect')->withInput();
-	}
-	
-	public function getDashboard() {
-		$this->layout->content = View::make('users.dashboard');
 	}
 	
 	public function getLogout() {

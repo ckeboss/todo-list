@@ -3,20 +3,32 @@
 class TasksController extends BaseController {
 	
 	public function __construct() {
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->beforeFilter('csrf', array('on' => array('post', 'delete')));
 		$this->beforeFilter('auth');
 	}
 	
-	protected $layout = "layouts.main";
-	
-	public function getIndex($user_id = false) {
-		if(!$user_id) {
-			$user_id = Auth::user()->id;
-		}
-		
-		$tasks = Task::where('user_id', '=', $user_id)->paginate(30);
+	public function getIndex() {
+		$tasks = Task::where('user_id', '=', Auth::user()->id)->paginate(30);
 		
 		return Response::json(array('tasks' => $tasks->toArray()));
+	}
+	
+	public function getOthers() {
+		$tasks = Task::with(
+			array(
+				'user' => function($q){
+					$q->select(array('id', 'name'));
+				}
+			)
+		)->where('user_id', '!=', Auth::user()->id)->paginate(30);
+		
+		return Response::json(array('tasks' => $tasks->toArray()));
+	}
+	
+	public function getNew() {
+		$users = User::lists('name', 'id');
+		
+		return View::make('tasks/new')->with('users', $users);
 	}
 	
 	public function postNew() {
@@ -35,7 +47,16 @@ class TasksController extends BaseController {
 			$msg = 'Your task has been saved';
 			
 			if (Request::ajax()) {
-				return Response::json(array('message' => $msg, 'task' => $task->toArray()));
+				$task = Task::with(array(
+								'user' => function($q){
+									$q->select(array('id', 'name'));
+								}
+							))->where('id', '=', $task->id)->first();
+				return Response::json(
+					array(
+						'message' => $msg, 
+						'task' =>
+							$task->toArray()));
 			}
 			
 			return Redirect::to('tasks')->with('message', $msg);
@@ -49,6 +70,38 @@ class TasksController extends BaseController {
 		
 		return Redirect::to('tasks/add')->with('message', $msg)->withErrors($validator)->withInput();
 
+	}
+	
+	public function deleteDelete() {
+		Task::destroy(Input::get('id'));
+		
+		if (Request::ajax()) {
+			return Response::json(array('message' => 'Deleted'));
+		}
+	}
+	
+	public function postDone() {
+		$task = Task::find(Input::get('id'));
+		//We should check to see if we accually have a task
+		$task->finished = 1;
+		
+		$task->save();
+		
+		if (Request::ajax()) {
+			return Response::json(array('message' => 'Saved'));
+		}
+	}
+	
+	public function postNotDone() {
+		$task = Task::find(Input::get('id'));
+		//We should check to see if we accually have a task
+		$task->finished = 0;
+		
+		$task->save();
+		
+		if (Request::ajax()) {
+			return Response::json(array('message' => 'Saved'));
+		}		
 	}
 	
 	

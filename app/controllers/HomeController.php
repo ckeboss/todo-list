@@ -16,9 +16,8 @@ class HomeController extends BaseController {
 	*/
 
 	public function mainApp() {
-		$user = App::make('User');
 		
-		$users = $user->lists('name', 'id');
+		$users = User::lists('name', 'id');
 		
 		return View::make('main_app')->with('users', $users);
 	}
