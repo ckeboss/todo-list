@@ -4,7 +4,7 @@ Todo List
 Setup
 -------
 
-- Download/checkout and get run composer update
+- Download/checkout and get run composer install
 - Create .env.local.php with DB config, see example below
 - php artisan migrate
 - profit???
